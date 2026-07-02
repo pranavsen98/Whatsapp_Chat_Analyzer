@@ -2,6 +2,7 @@ import streamlit as st
 import preproccessor,helper
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import seaborn as sns
 st.sidebar.title("Whatsapp Chat Analyzer")
 uploaded_file = st.sidebar.file_uploader("choose a file")
 if uploaded_file is not None:
@@ -49,7 +50,7 @@ if uploaded_file is not None:
          st.pyplot(fig)
          #activity map
          st.title('Activity Map')
-         col1,col2 = st.columns(2)
+         col1 = st.columns(1)[0]
          with col1:
              st.header("Most Busy day")
              busy_day= helper.week_activity_map(selected_user,df)
@@ -57,13 +58,11 @@ if uploaded_file is not None:
              ax.bar(busy_day.index,busy_day.values)
              st.pyplot(fig)
 
-
-
-
-
-
-
-
+         st.title('Weekly Activity Map')
+         user_heatmap = helper.activity_heatmap(selected_user,df)
+         fig,ax = plt.subplots()
+         sns.heatmap(user_heatmap,ax=ax)
+         st.pyplot(fig)
 
          #Finding a busy user in the group
          if selected_user == 'overall':
